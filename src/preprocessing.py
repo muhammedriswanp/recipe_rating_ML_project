@@ -5,7 +5,6 @@ from sklearn.impute import SimpleImputer # Handles missing values
 from sklearn.preprocessing import OneHotEncoder
 from sklearn.compose import ColumnTransformer
 from sklearn.base import BaseEstimator, TransformerMixin
-from sklearn.feature_extraction.text import TfidfVectorizer #Converts text into numeric features so ML models can understand it, Work based word importance.
 import numpy as np
 import pandas as pd
 
@@ -19,10 +18,10 @@ class DateFeatureExtractor(BaseEstimator, TransformerMixin):
         X["hour"] = X["CreationTimestamp"].dt.hour
         X["day_of_week"] = X["CreationTimestamp"].dt.dayofweek
         X["month"] = X["CreationTimestamp"].dt.month
-        return X
+        return X.drop(columns=["CreationTimestamp"])
 
 #Build Preprocessing Pipelines
-def build_preprocessor(skewed_numeric_features, normal_numeric_features, categorical_features, text_feature):
+def build_preprocessor(skewed_numeric_features, normal_numeric_features, categorical_features):
     
     # Skewed Numeric Pipeline 
     skewed_pipeline = Pipeline([
@@ -43,19 +42,11 @@ def build_preprocessor(skewed_numeric_features, normal_numeric_features, categor
         ("encoder", OneHotEncoder(handle_unknown="ignore"))    
     ])
 
-    #Text Pipeline
-    text_pipeline = Pipeline([
-        ("imputer",SimpleImputer(strategy="constant",fill_value="")),
-        ("flatten", FunctionTransformer(lambda x: x.ravel(), validate=False)), #.ravel() converts 2D → 1D
-        ("tfidf", TfidfVectorizer(max_features=3000))   #Keep only the top 3000 most important words
-    ])
-
     #Combine Using ColumnTransformer
     column_transformer = ColumnTransformer(transformers=[
         ("skewed_num", skewed_pipeline, skewed_numeric_features),
         ("normal_num", normal_pipeline, normal_numeric_features),
-        ("cat", categorical_pipeline, categorical_features),
-        ("text", text_pipeline, text_feature)
+        ("cat", categorical_pipeline, categorical_features)
     ])
 
     preprocessor = Pipeline([
@@ -63,13 +54,4 @@ def build_preprocessor(skewed_numeric_features, normal_numeric_features, categor
         ("column_transform", column_transformer)
     ])
 
-
     return preprocessor
-
-# skewed_numeric_features = ["UserReputation", "ReplyCount", "ThumbsUpCount", "ThumbsDownCount", "BestScore"]
-
-# normal_numeric_features = ["RecipeNumber", "hour", "month"]
-
-# categorical_features = ["day_of_week"]
-
-# text_feature = "Recipe_Review" # Pass as a string (not a list). TfidfVectorizer expect 1D array.
