@@ -1,4 +1,4 @@
-#Baseline Model
+    #Baseline Model
 from sklearn.pipeline import Pipeline
 from sklearn.linear_model import LogisticRegression
 from sklearn.tree import DecisionTreeClassifier
@@ -31,8 +31,8 @@ def random_forest(preprocessor):
     ])
 
     param_grid = {
-        "classifier__max_depth": [None, 10, 20],
-        "classifier__min_samples_split": [2, 5]
+        "classifier__max_depth": [None, 5, 10],
+        "classifier__min_samples_split": [3, 5, 8]
     }
 
     grid  = GridSearchCV(
@@ -54,8 +54,8 @@ def gradient_boosting(preprocessor):
     ])
 
     param_grid = {
-        "classifier__n_estimators": [100, 200],
-        "classifier__learning_rate": [0.05, 0.1]
+        "classifier__n_estimators": [40, 50, 75],
+        "classifier__learning_rate": [0.05, 0.1, 0.2]
     }
 
     grid = GridSearchCV(
@@ -73,7 +73,7 @@ def evaluate_model(model, X_train, X_test, y_train, y_test):
     model.fit(X_train, y_train)
     
     if hasattr(model, 'best_score_'):
-        print(f"Internal GridSearch CV F1: {model.best_score_:.4f}")
+        print(f"mean F1 of the best combination: {model.best_score_:.4f}")
         print(f"Best Params: {model.best_params_}")
     else:
         cv_score = cross_val_score(model, X_train, y_train, cv=5, scoring='f1_weighted')
@@ -81,7 +81,7 @@ def evaluate_model(model, X_train, X_test, y_train, y_test):
 
     y_pred = model.predict(X_test)
     y_probs = model.predict_proba(X_test) 
-    # 'ovr' is recommended for imbalanced datasets when using 'weighted' average
+    #One-vs-Rest means model calculates ROC AUC by comparing each class against all other classes separately.
     auc = roc_auc_score(y_test, y_probs, multi_class='ovr', average='weighted')
     # A higher AUC score indicates a better ability to distinguish between classes, with 1.0 being a perfect score and 0.5 representing random guessing
 

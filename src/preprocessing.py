@@ -8,6 +8,9 @@ from sklearn.base import BaseEstimator, TransformerMixin
 import numpy as np
 import pandas as pd
 
+# sklearn Pipeline requires every step to have fit() and transform().
+# DateFeatureExtractor has nothing to learn from data (unlike StandardScaler),
+# so fit() just returns self as a placeholder.
 class DateFeatureExtractor(BaseEstimator, TransformerMixin):
     def fit(self, X, y=None):
         return self
