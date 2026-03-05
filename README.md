@@ -55,12 +55,15 @@ recipe_rating_ML_project/
 ```bash
 # 1. Install dependencies
 pip install -r requirements.txt
-
-# 2. Run the Streamlit app
-streamlit run src/app.py
 ```
 
 ## Retrain the Model
 ```bash
 python src/retrain.py
 ```
+
+```bash
+# 2. Run the Streamlit app
+python -m streamlit run src/app.py
+```
+
