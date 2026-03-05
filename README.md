@@ -41,7 +41,7 @@ recipe_rating_ML_project/
 │   ├── train.csv
 │   └── test.csv
 ├── notebooks/
-│   ├── eda.ipynb                  # EDA + training
+│   ├── eda.ipynb                  # EDA 
 │   └── recipe_rating_pipline.pkl  # Saved model
 ├── src/
 │   ├── app.py                     # Streamlit web app
