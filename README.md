@@ -1,6 +1,8 @@
-# Recipe Rating Predictor
+# Recipe Rating Predictor 🍽️
 
 Predicts the star rating (1–5) a user will give to a recipe based on their comment activity.
+
+🚀 **Live App:** [reciperatingmlproject.streamlit.app](https://reciperatingmlproject-y8kciggtqj3vj48jfxia8h.streamlit.app/)
 
 ---
 
@@ -24,25 +26,41 @@ Given features like user reputation, thumbs up/down, reply count, and comment ti
 | Logistic Regression | Baseline |
 | Decision Tree | Tree-based |
 | Random Forest | Ensemble |
-| Gradient Boosting | Ensemble |
+| Gradient Boosting | Ensemble ✅ Best |
 
 ## Results
-
 **Best Model: Gradient Boosting**
-
-Gradient Boosting outperformed all other models. It works by building trees sequentially — each tree corrects the mistakes of the previous one — making it ideal for this dataset where ratings are imbalanced and patterns are non-linear.
-
 - Scored on **F1-weighted** (handles class imbalance fairly)
-- Top features: `BestScore`, `UserReputation`, `ThumbsUpCount`and etc
-- Full confusion matrix and classification report in `notebooks/eda.ipynb`
+- Top features: `BestScore`, `UserReputation`, `ThumbsUpCount`
+- Full report in `notebooks/eda.ipynb`
 
-## How to Run
+## Project Structure
+```
+recipe_rating_ML_project/
+├── data/
+│   ├── train.csv
+│   └── test.csv
+├── notebooks/
+│   ├── eda.ipynb                  # EDA + training
+│   └── recipe_rating_pipline.pkl  # Saved model
+├── src/
+│   ├── app.py                     # Streamlit web app
+│   ├── preprocessing.py           # Custom pipeline & transformers
+│   ├── model.py                   # Model definitions
+│   └── retrain.py                 # Retrain script
+└── requirements.txt
+```
 
+## How to Run Locally
 ```bash
 # 1. Install dependencies
 pip install -r requirements.txt
 
-# 2. Run the notebook (trains & saves the pipeline)
-jupyter notebook notebooks/eda.ipynb
+# 2. Run the Streamlit app
+streamlit run src/app.py
+```
 
+## Retrain the Model
+```bash
+python src/retrain.py
 ```
