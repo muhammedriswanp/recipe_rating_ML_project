@@ -1,6 +1,6 @@
 # Recipe Rating Predictor 🍽️
 
-Predicts the star rating (1–5) a user will give to a recipe based on their comment activity.
+Predicts the star rating (1–5) a user will give to a recipe.
 
 🚀 **Live App:** [reciperatingmlproject.streamlit.app](https://reciperatingmlproject-y8kciggtqj3vj48jfxia8h.streamlit.app/)
 
